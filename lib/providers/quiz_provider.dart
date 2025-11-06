@@ -107,8 +107,21 @@ class QuizProvider with ChangeNotifier {
   }
 
   String getGenderSpecificImage(String mbtiType, {bool noBackground = false}) {
-    if (_currentUser == null) return 'assets/images/default.png';
-    return MBTIData.types[mbtiType]!.getImagePath(_currentUser!.gender, noBackground: noBackground);
+    if (_currentUser == null) {
+      print('❌ Current user is null');
+      return 'assets/images/default.png';
+    }
+
+    final typeData = MBTIData.types[mbtiType];
+    if (typeData == null) {
+      print('❌ MBTI type not found: $mbtiType');
+      return 'assets/images/default.png';
+    }
+
+    final imagePath = typeData.getImagePath(_currentUser!.gender, noBackground: noBackground);
+    print('🖼️ Generated image path: $imagePath');
+
+    return imagePath;
   }
 
   void resetQuiz() {

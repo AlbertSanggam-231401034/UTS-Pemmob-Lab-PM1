@@ -24,8 +24,21 @@ class MBTIType {
   });
 
   String getImagePath(String gender, {bool noBackground = false}) {
+    String genderCode;
+    if (gender.toLowerCase() == 'male') {
+      genderCode = 'M';
+    } else if (gender.toLowerCase() == 'female') {
+      genderCode = 'F';
+    } else {
+      genderCode = gender.toUpperCase(); // fallback
+    }
+
+
     String bgSuffix = noBackground ? '(c)' : '';
-    return 'assets/images/$code-${gender.toUpperCase()}$bgSuffix.png';
+
+    print('🖼️ Mencari gambar: assets/images/$code-$genderCode$bgSuffix.png');
+
+    return 'assets/images/$code-$genderCode$bgSuffix.png';
   }
 }
 
@@ -68,7 +81,7 @@ class MBTIData {
       code: 'ENTJ',
       name: 'Komandan',
       group: 'Analis',
-      description: 'Komandan (ENTJ) adalah kepribadian yang terlahir untuk menjadi pemimpin. Orang dengan tipe kepribadian ini memiliki karunia karisma dan kepercayaan diri, dan memproyeksikan otoritas dengan cara menarik orang banyak untuk mencapai tujuan bersama. Mereka tegas dan visioner, selalu menemukan cara atau membuatnya sendiri.',
+      description: 'Komandan (ENTJ) adalah kepribadian yang terlahir untuk menjadi pemimpin. Orang dengan tipe kepribadian ini memiliki karisma dan kepercayaan diri, dan memproyeksikan otoritas dengan cara menarik orang banyak untuk mencapai tujuan bersama. Mereka tegas dan visioner, selalu menemukan cara atau membuatnya sendiri.',
       traits: ['Berani', 'Imajinatif', 'Berkemauan kuat', 'Pemimpin', 'Karisma'],
       strengths: ['Efisien', 'Energik', 'Percaya diri', 'Berkemauan kuat', 'Karisma', 'Strategis'],
       weaknesses: ['Keras kepala', 'Tidak toleran', 'Tidak sabaran', 'Arogan', 'Sulit mengelola emosi', 'Dingin'],
@@ -160,12 +173,12 @@ class MBTIData {
     ),
 
     // ===========================================
-    // Group 3: Penjaga (Kuning)
+    // Group 3: Pengawal (Kuning)
     // ===========================================
     'ISTJ': MBTIType(
       code: 'ISTJ',
       name: 'Ahli Logistik',
-      group: 'Penjaga',
+      group: 'Pengawal',
       description: 'Ahli Logistik (ISTJ) adalah individu yang praktis dan berorientasi fakta, yang keandalannya tidak dapat diragukan. Mereka adalah pribadi penuh dedikasi dan integritas, bertanggung jawab atas tindakan mereka dan bangga dengan pekerjaan yang mereka lakukan. Mereka lebih suka bekerja sendiri, tetapi juga bisa diandalkan dalam tim.',
       traits: ['Praktis', 'Berorientasi fakta', 'Dapat diandalkan', 'Jujur', 'Sistematis'],
       strengths: ['Jujur', 'Berkemauan kuat', 'Bertanggung jawab', 'Tenang', 'Setia', 'Pekerja keras'],
@@ -180,7 +193,7 @@ class MBTIData {
     'ISFJ': MBTIType(
       code: 'ISFJ',
       name: 'Pembela',
-      group: 'Penjaga',
+      group: 'Pengawal',
       description: 'Pembela (ISFJ) adalah pribadi yang penuh perhatian, kehangatan, dan aura positifnya bisa membawa ketenangan pada orang-orang di sekitarnya. Mereka adalah pelindung yang sangat berdedikasi dan hangat, selalu siap membela orang yang mereka cintai dari bahaya. Kepekaan mereka terhadap orang lain hampir seperti sebuah indra keenam.',
       traits: ['Berdedikasi', 'Hangat', 'Pelindung', 'Suportif', 'Setia'],
       strengths: ['Suportif', 'Dapat diandalkan', 'Pengamat yang baik', 'Antusias', 'Pekerja keras', 'Keterampilan praktis baik'],
@@ -195,7 +208,7 @@ class MBTIData {
     'ESTJ': MBTIType(
       code: 'ESTJ',
       name: 'Eksekutif',
-      group: 'Penjaga',
+      group: 'Pengawal',
       description: 'Eksekutif (ESTJ) adalah perwakilan dari tradisi dan ketertiban, memanfaatkan pemahaman mereka tentang apa yang benar, salah, dan dapat diterima secara sosial untuk menyatukan keluarga dan komunitas. Mereka adalah organisator yang unggul, tak tertandingi dalam mengelola berbagai hal, termasuk orang-orang.',
       traits: ['Administrator', 'Manajer', 'Terorganisir', 'Jujur', 'Tradisional'],
       strengths: ['Berdedikasi', 'Berkemauan kuat', 'Jujur', 'Setia', 'Sabar', 'Pengatur ulung'],
@@ -210,7 +223,7 @@ class MBTIData {
     'ESFJ': MBTIType(
       code: 'ESFJ',
       name: 'Konsul',
-      group: 'Penjaga',
+      group: 'Pengawal',
       description: 'Konsul (ESFJ) adalah pribadi yang penuh perhatian, supel, dan berorientasi pada masyarakat serta selalu ingin membantu. Mereka adalah "si pemandu sorak" di sekolah atau "si populer" yang selalu ada untuk teman-temannya. Dermawan dan dapat diandalkan, mereka sering melakukan sesuatu untuk menyatukan komunitas mereka.',
       traits: ['Peduli', 'Sosial', 'Populer', 'Suka membantu', 'Harmonis'],
       strengths: ['Keterampilan praktis kuat', 'Rasa kewajiban kuat', 'Sangat setia', 'Sensitif dan hangat', 'Pandai bergaul'],
@@ -289,29 +302,27 @@ class MBTIData {
   };
 
   static Color getGroupColor(String group) {
-    // Pastikan string grup di sini cocok dengan yang ada di data di atas
     switch (group) {
       case 'Analis':
-        return Colors.blue.shade700;
+        return Colors.purple.shade600;
       case 'Diplomat':
         return Colors.green.shade600;
-      case 'Penjaga':
-        return Colors.amber.shade700;
+      case 'Pengawal':
+        return Colors.blue.shade700;
       case 'Penjelajah':
-        return Colors.purple.shade600;
+        return Colors.amber.shade700;
       default:
         return Colors.grey;
     }
   }
 
   static IconData getGroupIcon(String group) {
-    // Pastikan string grup di sini cocok dengan yang ada di data di atas
     switch (group) {
       case 'Analis':
         return Icons.analytics_outlined;
       case 'Diplomat':
         return Icons.people_outline;
-      case 'Penjaga':
+      case 'Pengawal':
         return Icons.shield_outlined;
       case 'Penjelajah':
         return Icons.explore_outlined;
