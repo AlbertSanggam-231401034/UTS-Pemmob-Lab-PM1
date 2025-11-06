@@ -118,7 +118,7 @@ class AboutMBTIScreen extends StatelessWidget {
             ),
 
             _buildGroupCard(
-              group: 'Penjaga',
+              group: 'Pengawal',
               color: Colors.amber.shade700,
               description: 'Praktis dan dapat diandalkan yang menjaga tradisi',
               types: ['ISTJ', 'ISFJ', 'ESTJ', 'ESFJ'],

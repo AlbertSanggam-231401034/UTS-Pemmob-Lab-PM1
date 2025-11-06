@@ -8,7 +8,7 @@ class AppConstants {
   static const List<String> mbtiGroups = [
     'Analis',
     'Diplomat',
-    'Penjaga',
+    'Pengawal',
     'Penjelajah'
   ];
 
