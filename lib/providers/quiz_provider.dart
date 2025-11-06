@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import '../models/user_model.dart';
-import '../models/question_model.dart';
-import '../models/mbti_result_model.dart';
-import '../data/mbti_data.dart';
-import '../data/question_bank.dart';
+import 'package:mbti_quiz/models/user_model.dart';
+import 'package:mbti_quiz/models/question_model.dart';
+import 'package:mbti_quiz/models/mbti_result_model.dart';
+import 'package:mbti_quiz/data/mbti_data.dart';
+import 'package:mbti_quiz/data/question_bank.dart';
+import 'package:mbti_quiz/utils/storage_manager.dart';
 
 class QuizProvider with ChangeNotifier {
   User? _currentUser;
@@ -75,6 +76,9 @@ class QuizProvider with ChangeNotifier {
 
     _quizCompleted = true;
 
+    // Save result to local storage
+    _saveResultToStorage(mbtiType, scores, percentages);
+
     return MBTIResult(
       user: _currentUser!,
       mbtiType: mbtiType,
@@ -82,6 +86,20 @@ class QuizProvider with ChangeNotifier {
       percentages: percentages,
       date: DateTime.now(),
     );
+  }
+
+  void _saveResultToStorage(String mbtiType, Map<String, int> scores, Map<String, double> percentages) {
+    final resultData = {
+      'userName': _currentUser!.name,
+      'userGender': _currentUser!.gender,
+      'mbtiType': mbtiType,
+      'scores': scores,
+      'percentages': percentages,
+      'date': DateTime.now().toIso8601String(),
+      'timestamp': DateTime.now().millisecondsSinceEpoch,
+    };
+
+    StorageManager.saveResult(resultData);
   }
 
   String _calculateMBTIType(Map<String, int> scores) {

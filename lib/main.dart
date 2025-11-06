@@ -7,6 +7,7 @@ import 'package:mbti_quiz/screens/about_mbti_screen.dart';
 import 'package:mbti_quiz/screens/main_screen.dart';
 import 'package:mbti_quiz/screens/quiz_screen.dart';
 import 'package:mbti_quiz/screens/result_screen.dart';
+import 'package:mbti_quiz/screens/history_screen.dart';
 import 'package:mbti_quiz/widgets/theme/app_themes.dart';
 
 void main() {
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
               '/main': (context) => MainScreen(),
               '/quiz': (context) => QuizScreen(),
               '/result': (context) => ResultScreen(),
+              '/history': (context) => HistoryScreen(),
             },
             debugShowCheckedModeBanner: false,
           );

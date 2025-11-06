@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:mbti_quiz/providers/theme_provider.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final isDarkMode = themeProvider.isDarkMode;
 
     return Scaffold(
       body: Container(
@@ -84,6 +87,7 @@ class WelcomeScreen extends StatelessWidget {
                   },
                   text: 'Start Test',
                   icon: Icons.play_arrow_rounded,
+                  isDarkMode: isDarkMode,
                 ),
 
                 const SizedBox(height: 16),
@@ -119,10 +123,43 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                 ),
 
+                const SizedBox(height: 16),
+
+                // History Button
+                OutlinedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/history');
+                  },
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: isDarkMode ? Colors.red.shade400 : Colors.blue.shade800,
+                    side: BorderSide(
+                      color: isDarkMode ? Colors.red.shade400 : Colors.blue.shade800,
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.history_rounded, size: 20),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Test History',
+                        style: GoogleFonts.inter(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
                 const SizedBox(height: 40),
 
-                // Theme Toggle
-                _buildThemeToggle(context),
+                // Theme Toggle Button - YANG BISA DIKLIK!
+                _buildThemeToggle(context, themeProvider, isDarkMode),
               ],
             ),
           ),
@@ -136,9 +173,8 @@ class WelcomeScreen extends StatelessWidget {
     required VoidCallback onPressed,
     required String text,
     required IconData icon,
+    required bool isDarkMode,
   }) {
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -188,27 +224,49 @@ class WelcomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildThemeToggle(BuildContext context) {
-    final themeProvider = Theme.of(context);
-    final isDarkMode = themeProvider.brightness == Brightness.dark;
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(
-          isDarkMode ? Icons.dark_mode_rounded : Icons.light_mode_rounded,
-          color: isDarkMode ? Colors.red.shade400 : Colors.blue.shade600,
-          size: 20,
-        ),
-        const SizedBox(width: 8),
-        Text(
-          isDarkMode ? 'Dark Mode' : 'Light Mode',
-          style: GoogleFonts.inter(
-            fontSize: 14,
-            color: isDarkMode ? Colors.grey.shade400 : Colors.grey.shade600,
+  Widget _buildThemeToggle(BuildContext context, ThemeProvider themeProvider, bool isDarkMode) {
+    return GestureDetector(
+      onTap: () {
+        // Ini yang akan toggle theme!
+        themeProvider.toggleTheme();
+        print('Theme toggled to: ${themeProvider.themeMode}');
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          color: isDarkMode ? Colors.red.shade900.withOpacity(0.3) : Colors.blue.shade100,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: isDarkMode ? Colors.red.shade400 : Colors.blue.shade600,
+            width: 1,
           ),
         ),
-      ],
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              isDarkMode ? Icons.dark_mode_rounded : Icons.light_mode_rounded,
+              color: isDarkMode ? Colors.red.shade400 : Colors.blue.shade600,
+              size: 20,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              isDarkMode ? 'Dark Mode' : 'Light Mode',
+              style: GoogleFonts.inter(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: isDarkMode ? Colors.red.shade400 : Colors.blue.shade600,
+              ),
+            ),
+            const SizedBox(width: 4),
+            Icon(
+              Icons.swap_horiz_rounded,
+              size: 16,
+              color: isDarkMode ? Colors.red.shade400 : Colors.blue.shade600,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 
 class AppThemes {
   // Light Theme - Putih Biru
-  static final lightTheme = ThemeData(
+  static final ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     primaryColor: Colors.blue.shade800,
     scaffoldBackgroundColor: Colors.white,
-    cardColor: Colors.blue.shade50,
 
     // App Bar
     appBarTheme: AppBarTheme(
@@ -87,16 +86,6 @@ class AppThemes {
       ),
     ),
 
-    // Card Theme - FIXED: Remove custom CardThemeData and use Flutter's built-in
-    // cardTheme: CardTheme( // Comment out or remove this section
-    //   color: Colors.blue.shade50,
-    //   elevation: 2,
-    //   shape: RoundedRectangleBorder(
-    //     borderRadius: BorderRadius.circular(16),
-    //   ),
-    //   margin: EdgeInsets.all(8),
-    // ),
-
     colorScheme: ColorScheme.light(
       primary: Colors.blue.shade800,
       secondary: Colors.blue.shade600,
@@ -106,11 +95,10 @@ class AppThemes {
   );
 
   // Dark Theme - Hitam Merah
-  static final darkTheme = ThemeData(
+  static final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     primaryColor: Colors.red.shade700,
     scaffoldBackgroundColor: Colors.grey.shade900,
-    cardColor: Colors.grey.shade800,
 
     // App Bar
     appBarTheme: AppBarTheme(
@@ -190,16 +178,6 @@ class AppThemes {
         fontFamily: 'Inter',
       ),
     ),
-
-    // Card Theme - FIXED: Remove custom CardThemeData and use Flutter's built-in
-    // cardTheme: CardTheme( // Comment out or remove this section
-    //   color: Colors.grey.shade800,
-    //   elevation: 2,
-    //   shape: RoundedRectangleBorder(
-    //     borderRadius: BorderRadius.circular(16),
-    //   ),
-    //   margin: EdgeInsets.all(8),
-    // ),
 
     colorScheme: ColorScheme.dark(
       primary: Colors.red.shade700,
