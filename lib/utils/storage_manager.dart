@@ -8,9 +8,18 @@ class StorageManager {
     try {
       final prefs = await SharedPreferences.getInstance();
       final results = await getResults();
-      results.add(result);
-      await prefs.setString(_resultsKey, jsonEncode(results));
-      print('✅ Result saved successfully: ${result['mbtiType']}');
+
+      // Cek duplikat berdasarkan timestamp
+      final existingIndex = results.indexWhere((r) =>
+      r['timestamp'] == result['timestamp']);
+
+      if (existingIndex == -1) {
+        results.add(result);
+        await prefs.setString(_resultsKey, jsonEncode(results));
+        print('✅ Result saved successfully: ${result['mbtiType']}');
+      } else {
+        print('⚠️ Result already exists, skipping duplicate save');
+      }
     } catch (e) {
       print('❌ Error saving result: $e');
     }

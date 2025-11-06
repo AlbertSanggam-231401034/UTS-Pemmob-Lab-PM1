@@ -1,32 +1,102 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:mbti_quiz/providers/quiz_provider.dart';
 import 'package:mbti_quiz/data/mbti_data.dart';
+import 'package:mbti_quiz/models/mbti_result_model.dart';
 
+// Kita ubah kembali ke StatelessWidget. Ini lebih sederhana dan TEPAT.
+// Kita akan mengambil data dari provider, BUKAN menghitungnya di sini.
 class ResultScreen extends StatelessWidget {
   const ResultScreen({Key? key}) : super(key: key);
 
+  // === FUNGSI NAVIGASI "TES ULANG" ===
+  // (Dipindah ke sini agar bisa diakses dari build method)
+  void _handleRetest(BuildContext context) {
+    // Ambil provider DENGAN listen: false
+    final quizProvider = Provider.of<QuizProvider>(context, listen: false);
+
+    try {
+      quizProvider.resetQuiz();
+      Future.delayed(const Duration(milliseconds: 100), () {
+        // 'mounted' tidak ada di StatelessWidget, tapi jika kita navigasi
+        // widget ini akan di-dispose. Ini aman.
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/main', // Navigasi ke /main (input nama)
+              (route) => false, // Hapus semua rute sebelumnya
+        );
+      });
+    } catch (e) {
+      print('Error during retest: $e');
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        '/',
+            (route) => false,
+      );
+    }
+  }
+
+  // === FUNGSI NAVIGASI "HOME" ===
+  void _handleGoHome(BuildContext context) {
+    // Ambil provider DENGAN listen: false
+    final quizProvider = Provider.of<QuizProvider>(context, listen: false);
+
+    try {
+      quizProvider.resetQuiz();
+      Future.delayed(const Duration(milliseconds: 100), () {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/', // Navigasi ke / (Welcome Screen)
+              (route) => false, // Hapus semua rute sebelumnya
+        );
+      });
+    } catch (e) {
+      print('Error during go home: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    // AMBIL DATA DARI PROVIDER
+    // Kita berasumsi calculateResult() SUDAH dipanggil di quiz_screen
+    // dan provider BELUM di-reset.
     final quizProvider = Provider.of<QuizProvider>(context);
-    final result = quizProvider.calculateResult();
-    final mbtiType = MBTIData.types[result.mbtiType]!;
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    // Dapatkan warna grup MBTI
-    final groupColor = MBTIData.getGroupColor(mbtiType.group);
-    final groupIcon = MBTIData.getGroupIcon(mbtiType.group);
+    // === PERBAIKAN BUG FLICKER & 2X HISTORY ===
+    // Jika provider di-reset (currentUser null), segera navigasi.
+    // Ini mencegah build error DAN mencegah panggilan ganda.
+    if (quizProvider.currentUser == null || !quizProvider.quizCompleted) {
+      // Ini akan menangani kasus di-refresh atau di-reset
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+      });
+      return Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 16),
+              Text('Data tes tidak valid, mengarahkan...'),
+            ],
+          ),
+        ),
+      );
+    }
 
-    // Debug information
-    final imagePath = quizProvider.getGenderSpecificImage(result.mbtiType, noBackground: true);
-    print('=== DEBUG RESULT SCREEN ===');
-    print('Current User Gender: ${quizProvider.currentUser?.gender}');
-    print('MBTI Type: ${result.mbtiType}');
-    print('MBTI Group: ${mbtiType.group}');
-    print('Group Color: $groupColor');
-    print('Image Path: $imagePath');
+    // === BUAT DATA HASIL SECARA LOKAL ===
+    // Kita TIDAK memanggil calculateResult() lagi.
+    // Kita hanya mengambil data yang SUDAH ADA di provider.
+    final MBTIResult result = quizProvider.getCachedResult(); // Panggil fungsi getCachedResult
+    final MBTIType mbtiType = MBTIData.types[result.mbtiType]!;
+    final String imagePath = quizProvider.getGenderSpecificImage(result.mbtiType, noBackground: true);
+    final Color groupColor = MBTIData.getGroupColor(mbtiType.group);
+    final IconData groupIcon = MBTIData.getGroupIcon(mbtiType.group);
 
+    // Ini adalah kode build UI Anda, tidak berubah
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -39,7 +109,6 @@ class ResultScreen extends StatelessWidget {
                 errorBuilder: (context, error, stackTrace) {
                   print('❌ Error loading image: $error');
                   print('🔍 Image path: $imagePath');
-
                   return Container(
                     color: isDarkMode ? Colors.grey.shade800 : groupColor.withOpacity(0.1),
                     child: Column(
@@ -80,7 +149,6 @@ class ResultScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Congratulations
                   Center(
                     child: Text(
                       'Selamat!',
@@ -102,11 +170,12 @@ class ResultScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 32),
-
-                  // MBTI Type Card
                   Card(
                     elevation: 4,
                     color: isDarkMode ? Colors.grey.shade800 : Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(24.0),
                       child: Column(
@@ -178,7 +247,6 @@ class ResultScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 24),
 
-                  // Personality Dimensions
                   Text(
                     'Dimensi Kepribadian Anda',
                     style: GoogleFonts.poppins(
@@ -226,7 +294,6 @@ class ResultScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 32),
 
-                  // Key Traits
                   Text(
                     'Ciri-ciri Utama',
                     style: GoogleFonts.poppins(
@@ -252,7 +319,6 @@ class ResultScreen extends StatelessWidget {
                     }).toList(),
                   ),
 
-                  // Famous Examples Section
                   SizedBox(height: 24),
                   Text(
                     'Tokoh Terkenal dengan Kepribadian Sama',
@@ -295,7 +361,6 @@ class ResultScreen extends StatelessWidget {
                     ),
                   ),
 
-                  // Career Suggestions Section
                   SizedBox(height: 24),
                   Text(
                     'Saran Karir yang Cocok',
@@ -324,62 +389,8 @@ class ResultScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 32),
 
-                  // Action Buttons
-                  Row(
-                    children: [
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () {
-                            quizProvider.resetQuiz();
-                            Navigator.pushNamedAndRemoveUntil(
-                              context,
-                              '/',
-                                  (route) => false,
-                            );
-                          },
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: groupColor,
-                            side: BorderSide(
-                              color: groupColor,
-                            ),
-                            padding: EdgeInsets.symmetric(vertical: 16),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          child: Text(
-                            'Tes Ulang',
-                            style: GoogleFonts.inter(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 16),
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            // Share or save results
-                            _showShareDialog(context, groupColor);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: groupColor,
-                            foregroundColor: Colors.white,
-                            padding: EdgeInsets.symmetric(vertical: 16),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          child: Text(
-                            'Bagikan Hasil',
-                            style: GoogleFonts.inter(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  // Memanggil _buildActionButtons
+                  _buildActionButtons(context, groupColor, isDarkMode),
                   SizedBox(height: 20),
                 ],
               ),
@@ -390,6 +401,74 @@ class ResultScreen extends StatelessWidget {
     );
   }
 
+  // === PERUBAHAN DI SINI ===
+  // (Tombol tidak perlu quizProvider lagi, karena fungsi navigasi
+  //  sudah ada di dalam class ini)
+  Widget _buildActionButtons(BuildContext context, Color groupColor, bool isDarkMode) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        ElevatedButton(
+          onPressed: () {
+            HapticFeedback.mediumImpact();
+            _handleRetest(context); // Panggil _handleRetest
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: groupColor,
+            foregroundColor: Colors.white,
+            padding: EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+          child: Text(
+            'Tes Ulang',
+            style: GoogleFonts.inter(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        SizedBox(height: 12),
+        OutlinedButton(
+          onPressed: () {
+            HapticFeedback.mediumImpact();
+            _handleGoHome(context); // Panggil _handleGoHome
+          },
+          style: OutlinedButton.styleFrom(
+            foregroundColor: groupColor,
+            side: BorderSide(
+              color: groupColor,
+            ),
+            padding: EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+          child: Text(
+            'Kembali ke Home',
+            style: GoogleFonts.inter(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        SizedBox(height: 12),
+        TextButton(
+          onPressed: () {
+            _showShareDialog(context, groupColor);
+          },
+          child: Text(
+            'Bagikan Hasil',
+            style: GoogleFonts.inter(
+              fontWeight: FontWeight.w600,
+              color: groupColor.withOpacity(0.8),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  // Fungsi helper _buildDimensionProgress
   Widget _buildDimensionProgress({
     required BuildContext context,
     required String label,
@@ -470,6 +549,7 @@ class ResultScreen extends StatelessWidget {
     );
   }
 
+  // Fungsi helper _showShareDialog
   void _showShareDialog(BuildContext context, Color groupColor) {
     showDialog(
       context: context,

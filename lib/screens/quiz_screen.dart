@@ -29,6 +29,7 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Anda sudah memanggil provider di sini, kita akan gunakan ini
     final quizProvider = Provider.of<QuizProvider>(context);
     final questions = quizProvider.currentQuiz;
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
@@ -221,12 +222,18 @@ class _QuizScreenState extends State<QuizScreen> {
                           curve: Curves.easeInOut,
                         );
                       } else {
-                        // Calculate result and navigate to result screen
-                        final result = quizProvider.calculateResult();
+                        // === PERBAIKAN BUG 2X HISTORY DI SINI ===
+
+                        // 1. Panggil fungsi BARU untuk menghitung & menyimpan (HANYA 1x)
+                        //    Kita gunakan 'quizProvider' yang sudah ada dari build method
+                        quizProvider.calculateAndSaveResult();
+
+                        // 2. Navigasi ke ResultScreen (yang sekarang akan membaca hasil)
                         Navigator.pushNamed(
                           context,
                           '/result',
                         );
+                        // ========================================
                       }
                     },
                     style: ElevatedButton.styleFrom(
