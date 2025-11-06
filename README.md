@@ -13,11 +13,8 @@ Sebuah aplikasi kuis MBTI yang dibangun menggunakan Flutter sebagai pemenuhan Uj
 
 ## 📝 Deskripsi Aplikasi
 
-[cite_start](Sesuai dengan kriteria `b. Nama Aplikasi` [cite: 64] dan `c. Deskripsi Aplikasi` [cite: 65])
-
-[cite_start]**PersonaTest** adalah aplikasi kuis pilihan ganda [cite: 7] yang dirancang untuk membantu pengguna menemukan tipe kepribadian MBTI (Myers-Briggs Type Indicator) mereka. Aplikasi ini dibuat untuk memenuhi tugas UTS Lab Pemrograman Mobile 1 (PM1) Semester Ganjil T.A. [cite_start]2025/2026[cite: 9, 10, 11].
-
-[cite_start]Pengguna dapat memasukkan nama [cite: 7][cite_start], memilih gender (untuk avatar), menjawab 20 pertanyaan [cite: 7] [cite_start]yang dipilih secara acak dari bank soal, dan langsung melihat halaman hasil yang mendetail[cite: 7]. [cite_start]Aplikasi ini juga dilengkapi dengan fitur riwayat tes, dual-theme (Light/Dark mode)[cite: 28], dan fungsionalitas untuk menghapus data riwayat.
+**PersonaTest** adalah aplikasi kuis pilihan ganda yang dirancang untuk membantu pengguna menemukan tipe kepribadian MBTI (Myers-Briggs Type Indicator) mereka. Aplikasi ini dibuat untuk memenuhi tugas UTS Lab Pemrograman Mobile 1 (PM1) Semester Ganjil T.A.2025/2026.
+Pengguna dapat memasukkan nama, memilih gender (untuk avatar), menjawab 20 pertanyaan yang dipilih secara acak dari bank soal, dan langsung melihat halaman hasil yang mendetail Aplikasi ini juga dilengkapi dengan fitur riwayat tes, dual-theme (Light/Dark mode), dan fungsionalitas untuk menghapus data riwayat.
 
 ### ✨ Fitur Utama
 * **Tes 20 Soal:** Menggunakan 5 pertanyaan acak per dikotomi (dari total 100 bank soal).
@@ -47,8 +44,6 @@ Sebuah aplikasi kuis MBTI yang dibangun menggunakan Flutter sebagai pemenuhan Uj
 
 ## 🎨 Mockup / Prototype (Figma)
 
-[cite_start](Sesuai dengan kriteria `f. Link mockup/prototype Aplikasi` [cite: 68])
-
 Seluruh desain dan prototipe aplikasi ini dibuat menggunakan Figma.
 
 * **https://www.figma.com/design/dhRaJbPt6mi9InnxK2xlrD/mbti_quizz?node-id=2-2&t=oKlpSq2IFvk2cXkf-1**
@@ -57,9 +52,8 @@ Seluruh desain dan prototipe aplikasi ini dibuat menggunakan Figma.
 
 ## 📚 Aset & Referensi (Credit)
 
-[cite_start](Sesuai dengan kriteria `d. Credit ke sumber-sumber aset yang digunakan` [cite: 66])
-
-* [cite_start]**Konten & Avatar MBTI:** Seluruh data deskripsi, ciri-ciri, saran karir, dan gambar avatar kepribadian diambil dari [16Personalities.com](https://www.16personalities.com/id/tipe-kepribadian)[cite: 31, 32].
+* **Konten & Avatar MBTI:** Seluruh data deskripsi, ciri-ciri, saran karir, dan gambar avatar kepribadian diambil dari [16Personalities.com](https://www.16personalities.com/id/tipe-kepribadian).
+* **Avatar MBTI :**Diambil dari Berbagai link Pinterest.
 * **Logo Aplikasi:** `https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.freepik.com%2Fpremium-vector%2Fmyersbriggs-type-indicator-mbti-psychological-test-introversion-extraversion-feeling-judging-etc_33440073.htm&psig=AOvVaw2_qjqIZg-m59byi7OEHXAf&ust=1762555802033000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCNjw75XO3pADFQAAAAAdAAAAABAE`
 * **Font:** [Google Fonts](https://fonts.google.com/) (Menggunakan font Poppins dan Inter).
 * **Manajemen State:** [Provider](https://pub.dev/packages/provider).
