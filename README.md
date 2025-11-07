@@ -42,7 +42,7 @@ Pengguna dapat memasukkan nama, memilih gender (untuk avatar), menjawab 20 perta
 
 ---
 
-## 🎨 Mockup / Prototype (Figma)
+## 🎨 Mockup / Prototype (Canva)
 
 Seluruh desain dan prototipe aplikasi ini dibuat menggunakan Canva.
 
