@@ -44,9 +44,9 @@ Pengguna dapat memasukkan nama, memilih gender (untuk avatar), menjawab 20 perta
 
 ## 🎨 Mockup / Prototype (Figma)
 
-Seluruh desain dan prototipe aplikasi ini dibuat menggunakan Figma.
+Seluruh desain dan prototipe aplikasi ini dibuat menggunakan Canva.
 
-* **https://www.figma.com/design/dhRaJbPt6mi9InnxK2xlrD/mbti_quizz?node-id=2-2&t=oKlpSq2IFvk2cXkf-1**
+* **https://www.canva.com/design/DAG395q3P34/ySG525glfCwfb76VN12Qcw/edit?utm_content=DAG395q3P34&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton**
 
 ---
 
@@ -55,7 +55,7 @@ Seluruh desain dan prototipe aplikasi ini dibuat menggunakan Figma.
 * **Konten & Avatar MBTI:** Seluruh data deskripsi, ciri-ciri, saran karir, dan gambar avatar kepribadian diambil dari [16Personalities.com](https://www.16personalities.com/id/tipe-kepribadian).
 * **Avatar MBTI :**Diambil dari Berbagai link Pinterest.
 * **Logo Aplikasi:** `https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.freepik.com%2Fpremium-vector%2Fmyersbriggs-type-indicator-mbti-psychological-test-introversion-extraversion-feeling-judging-etc_33440073.htm&psig=AOvVaw2_qjqIZg-m59byi7OEHXAf&ust=1762555802033000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCNjw75XO3pADFQAAAAAdAAAAABAE`
-* **Font:** [Google Fonts](https://fonts.google.com/) (Menggunakan font Poppins dan Inter).
+* **Font dan Icon:** [Google Fonts](https://fonts.google.com/) (Menggunakan font Poppins dan Inter).
 * **Manajemen State:** [Provider](https://pub.dev/packages/provider).
 * **Penyimpanan Lokal:** [shared_preferences](https://pub.dev/packages/shared_preferences).
 * **Animasi Konfeti:** [confetti](https://pub.dev/packages/confetti).
